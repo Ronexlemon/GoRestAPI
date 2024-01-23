@@ -21,3 +21,6 @@ var albums =[]album{{ID: "1",Title: "Blue Train",Artist: "Lemon",Price: 30.40},
 {ID: "1",Title: "Gollowed Tingest",Artist: "Lemonrrrrrr",Price: 130.40},
 {ID: "1",Title: "degoes Denolin",Artist: "Lemonrrrrrrrr",Price: 140.40}}
 
+func getAlbums(c *gin.Context){
+	
+}
