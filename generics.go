@@ -5,6 +5,9 @@ import (
 )
 
 //sumints
+type Number interface{
+	int64 | float64
+}
 
 func sumInts(m map[string]int64)int64{
 	var sum int64
@@ -32,6 +35,15 @@ func sumIntOrFloat[k comparable, v int64 | float64](m map[k]v)v{
 	return sum
 }
 
+//with interface
+func sumIntOrFloatWithInterface[k comparable, v Number | float64](m map[k]v)v{
+	var sum v
+	for _,v:=range m{
+		sum +=v
+	}
+	return sum
+}
+
 func Generic(){
 	mInt:=map[string]int64{"first":20,"second":30}
 	mfloat:=map[string]float64{"first":21.5,"second":33.6}
@@ -44,7 +56,10 @@ func GenericCall(){
 	mInt:=map[string]int64{"first":20,"second":30}
 	mfloat:=map[string]float64{"first":21.5,"second":33.6}
 
-	fmt.Println("sum for int %v:",sumIntOrFloat[string,int64](mInt))
-	fmt.Println("sum for floats %v:",sumIntOrFloat[string,float64](mfloat))
+	fmt.Printf("sum for int %v:",sumIntOrFloat[string,int64](mInt))
+	fmt.Printf("sum for floats %v:",sumIntOrFloat[string,float64](mfloat))
+
+	fmt.Printf("sum for int with interface %v:",sumIntOrFloatWithInterface(mInt))
+	fmt.Printf("sum for floats with interface %v:",sumIntOrFloatWithInterface(mfloat))
 
 }
