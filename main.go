@@ -3,8 +3,11 @@ package main
 import (
 	
 	"net/http"
-
+    
 	"github.com/gin-gonic/gin"
+	
+	
+	
 )
 
 type album struct{
@@ -51,11 +54,15 @@ func getAlbumById(c *gin.Context){
 
 }
 
-func main(){
-	router:= gin.Default()
-	router.GET("/albums",getAlbums)
-	router.POST("/albums",postAlbums)
-	router.GET("/albums/:id",getAlbumById)
+// func main(){
+// 	router:= gin.Default()
+// 	router.GET("/albums",getAlbums)
+// 	router.POST("/albums",postAlbums)
+// 	router.GET("/albums/:id",getAlbumById)
 
-	router.Run("localhost:8080")
+// 	router.Run("localhost:8080")
+// }
+func main(){
+	Generic()
+	GenericCall()
 }
