@@ -4,8 +4,10 @@ import (
 	"fmt"
 	//"gorm.io/driver/postgres"
 	"os"
+
 	"github.com/joho/godotenv"
 
+	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
@@ -25,5 +27,11 @@ func Connect() {
 	port := os.Getenv("DB_PORT")
 
 	dsn := fmt.Sprintf("host=%s  user=%s  password =%s dbname=%s port =%s sslmode=disable ", host, username, password, databaseName, port)
-	fmt.Println(dsn)
+	Database,err = gorm.Open(postgres.Open(dsn),&gorm.Config{})
+
+	if err !=nil{
+		panic(err)
+	}else{
+		fmt.Println("Successfully connected to the database")
+	}
 }
