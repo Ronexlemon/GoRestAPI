@@ -1,4 +1,4 @@
- package main
+ package album
 
  import (
 	"net/http"
