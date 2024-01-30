@@ -4,6 +4,8 @@ import (
 	"errors"
 	"example/restapi/model"
 	"fmt"
+	"time"
+	"strconv"
 
 	"os"
 	"strings"
@@ -60,4 +62,14 @@ func getTokenFromRequest(context *gin.Context) string {
 		return splitToken[1]
 	}
 	return ""
+}
+
+func GenerateJWT(user model.User) (string, error) {
+    tokenTTL, _ := strconv.Atoi(os.Getenv("TOKEN_TTL"))
+    token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+        "id":  user.ID,
+        "iat": time.Now().Unix(),
+        "eat": time.Now().Add(time.Second * time.Duration(tokenTTL)).Unix(),
+    })
+    return token.SignedString(privateKey)
 }
