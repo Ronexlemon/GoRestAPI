@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"example/restapi/helper"
 	"example/restapi/model"
 	"net/http"
 
@@ -24,4 +25,28 @@ func Register(context *gin.Context){
 		context.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
 	}
 	context.JSON(http.StatusCreated,gin.H{"user":savedUser})
+}
+
+
+func AddEntry(context *gin.Context){
+	var input model.Entry
+
+	if err:= context.ShouldBindJSON(&input); err !=nil{
+		context.JSON(http.StatusBadRequest,gin.H{"error": err.Error()})
+		return
+	}
+	user, err:= helper.CurrentUser(context)
+	if err !=nil{
+		context.JSON(http.StatusBadRequest,gin.H{"error": err.Error()})
+		return
+	}
+	input.UserID = user.ID
+	savedEntry, err := input.Save()
+
+	if err !=nil {
+		context.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+		return
+	}
+	context.JSON(http.StatusCreated,gin.H{"data":savedEntry})
+
 }
