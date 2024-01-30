@@ -9,26 +9,26 @@ import (
 	"gorm.io/gorm"
 )
 
-type User struct{
+type User struct {
 	gorm.Model
 	Username string `gorm:"size:255;not null;unique" json:"username"`
 	Password string `gorm:"size:255;not null;" json:"-"`
-	Entries []Entry
+	Entries  []Entry
 }
 
-func(user *User) Save() (*User,error){
-	err:= database.Database.Create(&user).Error
-	if err !=nil{
+func (user *User) Save() (*User, error) {
+	err := database.Database.Create(&user).Error
+	if err != nil {
 		return user, nil
 	}
 
-	return user,nil
+	return user, nil
 }
 
-func (user *User) BeforeSave(*gorm.DB)error{
-	passwordHash,err := bcrypt.GenerateFromPassword([]byte(user.Password),bcrypt.DefaultCost)
+func (user *User) BeforeSave(*gorm.DB) error {
+	passwordHash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 
-	if err !=nil{
+	if err != nil {
 		return nil
 	}
 	user.Password = string(passwordHash)
@@ -36,15 +36,25 @@ func (user *User) BeforeSave(*gorm.DB)error{
 	return nil
 }
 
-func (user *User) ValidatePassword(password string) error{
-	return bcrypt.CompareHashAndPassword([]byte(user.Password),[]byte(password))
+func (user *User) ValidatePassword(password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 }
-func FindUserByUsername(username string)(User,error){
+func FindUserByUsername(username string) (User, error) {
 	var user User
-	err:=database.Database.Where("username=?",username).Find(&user).Error
+	err := database.Database.Where("username=?", username).Find(&user).Error
 
-	if err !=nil{
-		return user,nil
+	if err != nil {
+		return user, nil
+	}
+	return user, nil
+}
+
+func FindUserById(id uint) (User, error) {
+	var user User
+	err := database.Database.Preload("Entries").Where("ID=?", id).Find(&user).Error
+
+	if err != nil {
+		return User{}, err
 	}
 	return user, nil
 }
