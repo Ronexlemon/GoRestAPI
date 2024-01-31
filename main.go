@@ -41,6 +41,7 @@ func serverApplication() {
     protectedRoutes.Use(middleware.JWTAuthMiddleware())
     protectedRoutes.POST("/entry", controller.AddEntry)
     protectedRoutes.GET("/entry", controller.GetAllEntries)
+	protectedRoutes.GET("/entryy", controller.GetAllEntries)
 
 
 	router.Run(":8000")
